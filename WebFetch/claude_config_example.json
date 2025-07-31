@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "webfetch": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "webfetch-mcp:latest"
+      ],
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      }
+    }
+  }
+}
