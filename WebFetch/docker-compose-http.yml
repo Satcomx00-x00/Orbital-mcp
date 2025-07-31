@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  webfetch-http:
+    build: 
+      context: .
+      dockerfile: Dockerfile.http
+    image: webfetch-mcp-http:latest
+    container_name: webfetch-mcp-http-server
+    
+    # Expose HTTP port
+    ports:
+      - "8000:8000"
+    
+    # Environment variables
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
+      - HOST=0.0.0.0
+      - PORT=8000
+      
+    # Resource limits
+    mem_limit: 512m
+    memswap_limit: 512m
+    cpus: 1.0
+    
+    # Restart policy
+    restart: unless-stopped
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Security options
+    security_opt:
+      - no-new-privileges:true
+    
+    # Read-only root filesystem (with temp directories)
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=100m
+    
+    # Network mode
+    network_mode: bridge
+    
+    # Labels for organization
+    labels:
+      - "app=webfetch-mcp-http"
+      - "version=1.0.0"
+      - "description=HTTP API for WebFetch MCP Server"

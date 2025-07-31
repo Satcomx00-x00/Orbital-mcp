@@ -119,29 +119,7 @@ async def test_mcp_tools():
     
     print(json.dumps(example_request, indent=2))
 
-def test_docker_build():
-    """Test if Docker can build the image"""
-    print("\n🐳 Testing Docker Build...")
-    print("=" * 50)
-    
-    try:
-        # Check if Docker is available
-        result = subprocess.run(['docker', '--version'], 
-                              capture_output=True, text=True, timeout=10)
-        if result.returncode == 0:
-            print(f"✅ Docker is available: {result.stdout.strip()}")
-            
-            print("\n📦 To build the image, run:")
-            print("   docker build -t webfetch-mcp /workspace/Orbital-mcp/WebFetch/")
-            
-            print("\n🚀 To run the MCP server:")
-            print("   docker run -i webfetch-mcp")
-            
-        else:
-            print("❌ Docker is not available")
-            
-    except (subprocess.TimeoutExpired, FileNotFoundError):
-        print("❌ Docker is not installed or not accessible")
+
 
 def validate_requirements():
     """Validate that all required packages can be imported"""
@@ -170,7 +148,6 @@ def main():
     
     # Run validation tests
     validate_requirements()
-    test_docker_build()
     
     # Run async tests
     asyncio.run(test_mcp_tools())
